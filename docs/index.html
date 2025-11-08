@@ -13,13 +13,16 @@
         <div class="container">
             <div class="grid-background"></div>
             <div class="ascii-art">
-                <pre id="ascii-canvas"></pre>
+                <pre id="ascii-canvas">    ╔══════════════════════════════════════════════════════════════════╗
+    ║  ●   ●   ●   ●                                                ║
+    ║   ╲ │ ╱ ╲ │ ╱     ──→ [DISTILL] ──→ [TRAIN] ──→ [ADAPT] ──→ ∞  ║
+    ║    ◆   ◆   ◆      Δθ = -∇L(θ)  ·  learning_rate              ║
+    ╚══════════════════════════════════════════════════════════════════╝</pre>
             </div>
             <h1 class="title">
                 <span class="line">Your agents should learn from experience,</span>
                 <span class="line">not just follow instructions.</span>
             </h1>
-            <p class="subtitle">Stop optimizing prompts. Start optimizing models.</p>
             <p class="description">
                 DeltaLoop is the open-source continuous fine-tuning layer that automatically
                 converts your AI agent logs into training data and creates specialized LoRA adapters.
@@ -150,44 +153,6 @@
                         <div class="metric">Zero downtime</div>
                     </div>
                 </div>
-            </div>
-
-            <div class="architecture-diagram">
-                <svg viewBox="0 0 800 200" class="flow-diagram">
-                    <!-- Background grid -->
-                    <defs>
-                        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
-                        </pattern>
-                    </defs>
-                    <rect width="800" height="200" fill="url(#grid)"/>
-
-                    <!-- Flow boxes -->
-                    <rect x="10" y="70" width="140" height="60" fill="none" stroke="white" stroke-width="2"/>
-                    <text x="80" y="105" text-anchor="middle" fill="white" font-size="14" font-family="monospace">Agent Logs</text>
-
-                    <path d="M 155 100 L 205 100" stroke="white" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-                    <rect x="210" y="70" width="140" height="60" fill="none" stroke="white" stroke-width="2"/>
-                    <text x="280" y="105" text-anchor="middle" fill="white" font-size="14" font-family="monospace">Distillation</text>
-
-                    <path d="M 355 100 L 405 100" stroke="white" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-                    <rect x="410" y="70" width="140" height="60" fill="none" stroke="white" stroke-width="2"/>
-                    <text x="480" y="105" text-anchor="middle" fill="white" font-size="14" font-family="monospace">Fine-Tuning</text>
-
-                    <path d="M 555 100 L 605 100" stroke="white" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-                    <rect x="610" y="70" width="140" height="60" fill="none" stroke="white" stroke-width="2"/>
-                    <text x="680" y="105" text-anchor="middle" fill="white" font-size="14" font-family="monospace">LoRA Adapter</text>
-
-                    <!-- Arrow marker -->
-                    <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                            <polygon points="0 0, 10 3, 0 6" fill="white"/>
-                        </marker>
-                    </defs>
-                </svg>
             </div>
         </div>
     </section>

@@ -56,19 +56,23 @@ h1, h2, h3 {
 }
 
 .ascii-art {
-    margin-bottom: var(--spacing-md);
-    animation: fadeInUp 0.8s ease-out forwards;
+    margin-bottom: var(--spacing-lg);
+    animation: fadeInUp 0.8s ease-out 0.2s forwards;
     opacity: 0;
+    min-height: 120px;
 }
 
 .ascii-art pre {
     font-family: 'Courier New', monospace;
-    font-size: clamp(0.5rem, 1.5vw, 0.9rem);
-    line-height: 1.2;
+    font-size: clamp(0.6rem, 1.8vw, 1rem);
+    line-height: 1.4;
     color: var(--white);
-    opacity: 0.6;
+    opacity: 0.8;
     text-align: center;
     overflow-x: auto;
+    white-space: pre;
+    margin: 0;
+    padding: var(--spacing-sm);
 }
 
 .grid-background {
@@ -97,10 +101,10 @@ h1, h2, h3 {
 }
 
 .title {
-    font-size: clamp(2.5rem, 8vw, 6rem);
-    line-height: 1.1;
+    font-size: clamp(2rem, 6vw, 4rem);
+    line-height: 1.2;
     margin-bottom: var(--spacing-md);
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .title .line {
