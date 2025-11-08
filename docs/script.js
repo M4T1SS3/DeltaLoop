@@ -1,3 +1,118 @@
+// ASCII Art Generator for Hero Section
+class AsciiArtGenerator {
+    constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.width = 70;
+        this.height = 5;
+
+        // Mathematical and AI symbols
+        this.symbols = ['Δ', '∇', '∂', 'θ', 'λ', 'σ', 'μ', '∞', 'Σ', 'Π', '∫', '→', '⟶', '⇒', '⊕', '⊗', '∈', '∀', '∃'];
+        this.nodeSymbols = ['●', '○', '◆', '◇', '■', '□', '▲', '△'];
+        this.connectSymbols = ['─', '│', '┌', '┐', '└', '┘', '├', '┤', '┬', '┴', '┼', '═', '║', '╔', '╗', '╚', '╝'];
+
+        this.frame = 0;
+        this.patterns = [
+            this.generateNeuralNet.bind(this),
+            this.generateDataFlow.bind(this),
+            this.generateMathEquation.bind(this),
+            this.generateGradientDescent.bind(this)
+        ];
+
+        this.currentPattern = 0;
+        this.init();
+    }
+
+    init() {
+        this.render();
+        // Change pattern every 5 seconds
+        setInterval(() => {
+            this.currentPattern = (this.currentPattern + 1) % this.patterns.length;
+            this.frame = 0;
+        }, 5000);
+
+        // Animate current pattern
+        setInterval(() => {
+            this.frame++;
+            this.render();
+        }, 200);
+    }
+
+    render() {
+        const pattern = this.patterns[this.currentPattern]();
+        this.canvas.textContent = pattern;
+    }
+
+    generateNeuralNet() {
+        let art = '    ╔══════════════════════════════════════════════════════════════════╗\n';
+
+        // Layer 1 (input)
+        const nodes1 = this.frame % 2 === 0 ? '●' : '○';
+        art += `    ║  ${nodes1}   ${nodes1}   ${nodes1}   ${nodes1}                                                ║\n`;
+
+        // Connections
+        const conn = this.frame % 2 === 0 ? '━' : '─';
+        art += `    ║   ╲ │ ╱ ╲ │ ╱     ${conn}${conn}→ [DISTILL] ${conn}${conn}→ [TRAIN] ${conn}${conn}→ [ADAPT] ${conn}${conn}→ ∞  ║\n`;
+
+        // Layer 2 (hidden)
+        const nodes2 = this.frame % 2 === 0 ? '◆' : '◇';
+        art += `    ║    ${nodes2}   ${nodes2}   ${nodes2}      Δθ = -∇L(θ)  ·  learning_rate              ║\n`;
+
+        art += '    ╚══════════════════════════════════════════════════════════════════╝';
+        return art;
+    }
+
+    generateDataFlow() {
+        const symbols = ['⟶', '→', '⇒'];
+        const arrow = symbols[this.frame % symbols.length];
+
+        let art = '    ╔══════════════════════════════════════════════════════════════════╗\n';
+        art += `    ║  [LOGS] ${arrow} {filter, dedupe} ${arrow} [DATASET] ${arrow} {LoRA} ${arrow} [MODEL]  ║\n`;
+
+        const pulse = this.frame % 3;
+        const nodes = pulse === 0 ? '●○○' : pulse === 1 ? '○●○' : '○○●';
+        art += `    ║                                                                  ║\n`;
+        art += `    ║    ${nodes}  Training: ${this.frame % 500}/500 steps  Loss: ${(2.5 - (this.frame * 0.01) % 2).toFixed(2)}     ║\n`;
+        art += '    ╚══════════════════════════════════════════════════════════════════╝';
+        return art;
+    }
+
+    generateMathEquation() {
+        const equations = [
+            'L(θ) = Σ log P(y|x,θ)  →  min Loss, max Learning',
+            'θ′ = θ - α·∇L(θ)  →  Gradient Descent in Action',
+            'W_adapted = W_base + ΔW_LoRA  →  17MB of Pure Knowledge',
+            'Performance: 65% → 85% = +31% via Continuous Learning'
+        ];
+
+        const eq = equations[Math.floor(this.frame / 5) % equations.length];
+
+        let art = '    ╔══════════════════════════════════════════════════════════════════╗\n';
+        art += '    ║                                                                  ║\n';
+        art += `    ║    ${eq.padEnd(62)}║\n`;
+        art += '    ║                                                                  ║\n';
+        art += '    ╚══════════════════════════════════════════════════════════════════╝';
+        return art;
+    }
+
+    generateGradientDescent() {
+        const step = this.frame % 10;
+        const dots = '●'.repeat(step) + '○'.repeat(10 - step);
+
+        let art = '    ╔══════════════════════════════════════════════════════════════════╗\n';
+        art += `    ║  Optimization: [${dots}] ${step * 10}%                          ║\n`;
+        art += '    ║                                                                  ║\n';
+
+        // Gradient visualization
+        const descent = this.frame % 20 < 10
+            ? '    ║  Loss ↘  ∇θ → ∂L/∂θ → θ_new → Converging to optimal...          ║'
+            : '    ║  Model ↗  Performance improving → 65% → 75% → 85% → ∞          ║';
+
+        art += descent + '\n';
+        art += '    ╚══════════════════════════════════════════════════════════════════╝';
+        return art;
+    }
+}
+
 // Intersection Observer for scroll animations
 const observerOptions = {
     threshold: 0.1,
@@ -14,6 +129,9 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe all animatable elements
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize ASCII art generator
+    new AsciiArtGenerator('ascii-canvas');
+
     // Observe pipeline steps
     const pipelineSteps = document.querySelectorAll('.pipeline-step');
     pipelineSteps.forEach(step => observer.observe(step));
