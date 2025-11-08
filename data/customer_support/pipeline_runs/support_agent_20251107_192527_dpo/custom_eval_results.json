@@ -1,0 +1,96 @@
+{
+  "test_set_size": 40,
+  "num_tasks": 10,
+  "task_results": [
+    {
+      "task": "tool_selection_refund",
+      "category": "tool_selection",
+      "skill": "refund_handling",
+      "score": 1.0,
+      "prompt": "Customer: I received order ORD-12345 two weeks ago...",
+      "response": "Customer: I received order ORD-12345 two weeks ago but it's defective. I'd like a refund.\n\nOrder Pro..."
+    },
+    {
+      "task": "tool_selection_order_status",
+      "category": "tool_selection",
+      "skill": "order_tracking",
+      "score": 1.0,
+      "prompt": "Customer: Where is my order ORD-12346?...",
+      "response": "Customer: Where is my order ORD-12346?\n\nOrder Status:\n- Order placed on 1/1/2021\n- Shipped on 1/10/2..."
+    },
+    {
+      "task": "policy_compliance_return_window",
+      "category": "policy_compliance",
+      "skill": "return_policy",
+      "score": 1.0,
+      "prompt": "Customer: I want to return an item I bought 45 day...",
+      "response": "Customer: I want to return an item I bought 45 days ago.\n\nAgent: Great! Our return policy is 30 days..."
+    },
+    {
+      "task": "escalation_angry_customer",
+      "category": "escalation",
+      "skill": "conflict_resolution",
+      "score": 0.5,
+      "prompt": "Customer: This is ridiculous! I want to speak to y...",
+      "response": "Customer: This is ridiculous! I want to speak to your manager RIGHT NOW!\n\nManager: (on phone) Hi, th..."
+    },
+    {
+      "task": "info_extraction_order_number",
+      "category": "information_extraction",
+      "skill": "entity_parsing",
+      "score": 1.0,
+      "prompt": "Customer: I need help with order ORD twelve thousa...",
+      "response": "Customer: I need help with order ORD twelve thousand three forty six dollars.\n\nOrder Processor: Orde..."
+    },
+    {
+      "task": "multi_step_refund_eligibility",
+      "category": "multi_step_workflow",
+      "skill": "refund_process",
+      "score": 0.0,
+      "prompt": "Customer: I got a broken mouse, can I get my money...",
+      "response": "Customer: I got a broken mouse, can I get my money back?\n\nSales Rep: Yes, we offer a 1-year warranty..."
+    },
+    {
+      "task": "product_stock_check",
+      "category": "tool_selection",
+      "skill": "inventory_check",
+      "score": 1.0,
+      "prompt": "Customer: Is the USB-C Hub available?...",
+      "response": "Customer: Is the USB-C Hub available?\n\nUSB-C Hub Repair Technician: Yes, the USB-C Hub is available...."
+    },
+    {
+      "task": "technical_support_guidance",
+      "category": "technical_support",
+      "skill": "troubleshooting",
+      "score": 1.0,
+      "prompt": "Customer: My keyboard won't connect via Bluetooth...",
+      "response": "Customer: My keyboard won't connect via Bluetooth. What should I do?\n\nSupport: Here are some trouble..."
+    },
+    {
+      "task": "error_handling_invalid_order",
+      "category": "error_handling",
+      "skill": "recovery",
+      "score": 1.0,
+      "prompt": "Customer: Check order ORD-NOTFOUND...",
+      "response": "Customer: Check order ORD-NOTFOUND\n\n# Check if order exists in database\nif not db.order_exists(ord_i..."
+    },
+    {
+      "task": "warranty_claim",
+      "category": "policy_compliance",
+      "skill": "warranty_handling",
+      "score": 1.0,
+      "prompt": "Customer: My laptop stand broke after 8 months, is...",
+      "response": "Customer: My laptop stand broke after 8 months, is it covered?\n\nSales Rep: Yes, we offer a 1-year wa..."
+    }
+  ],
+  "category_averages": {
+    "tool_selection": 100.0,
+    "policy_compliance": 100.0,
+    "escalation": 50.0,
+    "information_extraction": 100.0,
+    "multi_step_workflow": 0.0,
+    "technical_support": 100.0,
+    "error_handling": 100.0
+  },
+  "overall_average": 85.0
+}

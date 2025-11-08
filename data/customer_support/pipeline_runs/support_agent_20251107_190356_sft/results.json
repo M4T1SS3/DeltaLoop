@@ -1,0 +1,113 @@
+{
+  "run_name": "support_agent_20251107_190356_sft",
+  "timestamp": "2025-11-07T19:08:48.701299",
+  "config": {
+    "logs_path": "data/customer_support/interactions_train.jsonl",
+    "output_dir": "data/customer_support/pipeline_runs",
+    "run_name": "support_agent_20251107_190356_sft",
+    "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "training_steps": 100,
+    "training_method": "sft",
+    "lora_r": 16,
+    "learning_rate": 0.0002,
+    "max_seq_length": 512,
+    "per_device_batch_size": 1,
+    "eval_device": "auto",
+    "verbose": true,
+    "save_results": true
+  },
+  "distillation_stats": {
+    "total_traces": 160,
+    "successful_traces": 123,
+    "failed_traces": 37,
+    "duplicates_removed": 94,
+    "quality_filtered": 0,
+    "training_examples": 29,
+    "format": "chatml"
+  },
+  "training_result": {
+    "output_dir": "data/customer_support/pipeline_runs/support_agent_20251107_190356_sft/adapter",
+    "adapter_size_mb": 79558774,
+    "steps_completed": 100,
+    "final_loss": 1.1026554584503174,
+    "training_time_seconds": 232.7914023399353,
+    "config": null
+  },
+  "eval_summary": {
+    "total_tasks": 5,
+    "baseline_avg": 0.2,
+    "adapted_avg": 0.6,
+    "improvement_percent": 199.99999999999997,
+    "tasks_improved": 2,
+    "tasks_regressed": 0,
+    "tasks_unchanged": 3,
+    "timestamp": "2025-11-07T19:08:48.481771",
+    "config": {
+      "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "adapter_path": "data/customer_support/pipeline_runs/support_agent_20251107_190356_sft/adapter",
+      "device": "auto",
+      "max_length": 256
+    },
+    "results": [
+      {
+        "task_name": "tool_use_recognition",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "",
+        "adapted_output": "",
+        "prompt": "What's the weather in Paris?",
+        "expected": "Should mention using a weather tool",
+        "metadata": {}
+      },
+      {
+        "task_name": "direct_answer",
+        "baseline_score": 1.0,
+        "adapted_score": 1.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "2+2 \u2197\nAnswer: 4",
+        "adapted_output": "assistant: Let me calculate that!\n\nUsing machine learning to analyze computations. This may take a moment.\n\nUsing Python libraries...\n\n2 + 2 = 4\n\nThe result is 4.\n\nTo check if my calculation was succe",
+        "prompt": "What is 2+2?",
+        "expected": "Should answer '4' without mentioning tools",
+        "metadata": {}
+      },
+      {
+        "task_name": "reasoning_quality",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "Use examples from your own life or research to support your answer.",
+        "adapted_output": "",
+        "prompt": "Why is the sky blue? Explain your reasoning.",
+        "expected": "Should include reasoning keywords and explanation",
+        "metadata": {}
+      },
+      {
+        "task_name": "instruction_following",
+        "baseline_score": 0.0,
+        "adapted_score": 1.0,
+        "improvement_percent": 100.0,
+        "baseline_output": "Include specific examples of benefits you can offer to a person, such as weight loss, increased energy, or improved mental health.",
+        "adapted_output": "assistant: I can format the list for you! Using format_list()...\n\n1. Improves cardiovascular health\n2. Reduces the risk of chronic diseases\n3. Boosts mood and cognition\n\nLet me know what you'd like to",
+        "prompt": "List 3 benefits of exercise. Format your answer as a numbered list.",
+        "expected": "Should provide numbered list with 3 items",
+        "metadata": {}
+      },
+      {
+        "task_name": "domain_knowledge",
+        "baseline_score": 0.0,
+        "adapted_score": 1.0,
+        "improvement_percent": 100.0,
+        "baseline_output": "",
+        "adapted_output": "assistant: I don't have access to real-time data. However, I can provide you with the most recent country, city, or town. Can you search for the capital of france using search_facts('france')?\n\nUsing ",
+        "prompt": "What is the capital of France?",
+        "expected": "Should answer 'Paris'",
+        "metadata": {}
+      }
+    ]
+  },
+  "total_time_seconds": 292.0970139503479,
+  "dataset_path": "data/customer_support/pipeline_runs/support_agent_20251107_190356_sft/train.jsonl",
+  "adapter_path": "data/customer_support/pipeline_runs/support_agent_20251107_190356_sft/adapter",
+  "results_path": null
+}

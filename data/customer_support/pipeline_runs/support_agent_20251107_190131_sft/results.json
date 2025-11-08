@@ -1,0 +1,113 @@
+{
+  "run_name": "support_agent_20251107_190131_sft",
+  "timestamp": "2025-11-07T19:03:23.918292",
+  "config": {
+    "logs_path": "data/customer_support/interactions_train.jsonl",
+    "output_dir": "data/customer_support/pipeline_runs",
+    "run_name": "support_agent_20251107_190131_sft",
+    "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "training_steps": 20,
+    "training_method": "sft",
+    "lora_r": 16,
+    "learning_rate": 0.0002,
+    "max_seq_length": 512,
+    "per_device_batch_size": 1,
+    "eval_device": "auto",
+    "verbose": true,
+    "save_results": true
+  },
+  "distillation_stats": {
+    "total_traces": 80,
+    "successful_traces": 58,
+    "failed_traces": 22,
+    "duplicates_removed": 30,
+    "quality_filtered": 0,
+    "training_examples": 28,
+    "format": "chatml"
+  },
+  "training_result": {
+    "output_dir": "data/customer_support/pipeline_runs/support_agent_20251107_190131_sft/adapter",
+    "adapter_size_mb": 79557423,
+    "steps_completed": 20,
+    "final_loss": 2.1272083282470704,
+    "training_time_seconds": 58.229755878448486,
+    "config": null
+  },
+  "eval_summary": {
+    "total_tasks": 5,
+    "baseline_avg": 0.2,
+    "adapted_avg": 0.4,
+    "improvement_percent": 100.0,
+    "tasks_improved": 1,
+    "tasks_regressed": 0,
+    "tasks_unchanged": 4,
+    "timestamp": "2025-11-07T19:03:23.651375",
+    "config": {
+      "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "adapter_path": "data/customer_support/pipeline_runs/support_agent_20251107_190131_sft/adapter",
+      "device": "auto",
+      "max_length": 256
+    },
+    "results": [
+      {
+        "task_name": "tool_use_recognition",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "",
+        "adapted_output": "",
+        "prompt": "What's the weather in Paris?",
+        "expected": "Should mention using a weather tool",
+        "metadata": {}
+      },
+      {
+        "task_name": "direct_answer",
+        "baseline_score": 1.0,
+        "adapted_score": 1.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "2. 2+2 = ?\n3. 2 + 2 = ?\n4. 2 + 2 = ?\n5. 2 + 2 = ?\n6. 2 + 2 = ?\n7. 2 + 2 = ?\n8. 2 + 2 = ?\n9. 2 + 2 = ?\n10. 2 + 2 = ?\n11. 2 + 2 = ?\n12. 2 + 2 = ?\n13. 2 + 2 = ?\n14. 2 + 2 = ?\n15. 2 + 2 = ?\n16. 2 + 2 = ?\n",
+        "adapted_output": "2+2 = 4\n```\n\nIn this example, the text is surrounded by square brackets and a colon, indicating that it is a mathematical expression. The calculator will understand the expression and perform the oper",
+        "prompt": "What is 2+2?",
+        "expected": "Should answer '4' without mentioning tools",
+        "metadata": {}
+      },
+      {
+        "task_name": "reasoning_quality",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "",
+        "adapted_output": "- 2. Analyze a piece of text or image\n- In this case, analyze the text \"Why is the sky blue?\"\n- You may want to read the text carefully and identify its main idea, its main points, and its supporting ",
+        "prompt": "Why is the sky blue? Explain your reasoning.",
+        "expected": "Should include reasoning keywords and explanation",
+        "metadata": {}
+      },
+      {
+        "task_name": "instruction_following",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "Use bullet points if appropriate.",
+        "adapted_output": "",
+        "prompt": "List 3 benefits of exercise. Format your answer as a numbered list.",
+        "expected": "Should provide numbered list with 3 items",
+        "metadata": {}
+      },
+      {
+        "task_name": "domain_knowledge",
+        "baseline_score": 0.0,
+        "adapted_score": 1.0,
+        "improvement_percent": 100.0,
+        "baseline_output": "",
+        "adapted_output": "Answer: 1. Paris, France\nFrance is the most popular tourist destination in the world. Paris is the capital of France.",
+        "prompt": "What is the capital of France?",
+        "expected": "Should answer 'Paris'",
+        "metadata": {}
+      }
+    ]
+  },
+  "total_time_seconds": 112.16604208946228,
+  "dataset_path": "data/customer_support/pipeline_runs/support_agent_20251107_190131_sft/train.jsonl",
+  "adapter_path": "data/customer_support/pipeline_runs/support_agent_20251107_190131_sft/adapter",
+  "results_path": null
+}

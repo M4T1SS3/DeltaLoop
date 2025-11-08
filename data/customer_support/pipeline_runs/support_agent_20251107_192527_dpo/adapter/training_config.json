@@ -1,0 +1,18 @@
+{
+  "dataset_path": "data/customer_support/pipeline_runs/support_agent_20251107_192527_dpo/train.jsonl",
+  "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "output_dir": "data/customer_support/pipeline_runs/support_agent_20251107_192527_dpo/adapter",
+  "backend": "dpo",
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "max_steps": 100,
+  "learning_rate": 0.0002,
+  "per_device_batch_size": 1,
+  "gradient_accumulation_steps": 4,
+  "warmup_steps": 10,
+  "max_seq_length": 512,
+  "load_in_4bit": true,
+  "logging_steps": 10,
+  "save_steps": 100
+}

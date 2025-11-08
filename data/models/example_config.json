@@ -1,0 +1,18 @@
+{
+  "dataset_path": "data/datasets/train.jsonl",
+  "base_model": "unsloth/mistral-7b-bnb-4bit",
+  "output_dir": "data/models/v1",
+  "backend": "unsloth",
+  "lora_r": 32,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "max_steps": 1000,
+  "learning_rate": 0.0002,
+  "per_device_batch_size": 2,
+  "gradient_accumulation_steps": 4,
+  "warmup_steps": 10,
+  "max_seq_length": 2048,
+  "load_in_4bit": true,
+  "logging_steps": 10,
+  "save_steps": 100
+}

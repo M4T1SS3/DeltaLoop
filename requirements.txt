@@ -1,0 +1,26 @@
+# Core dependencies for DeltaLoop
+
+# Deep Learning
+torch>=2.0.0
+transformers>=4.36.0
+datasets>=2.14.0
+peft>=0.7.0
+trl>=0.7.0
+bitsandbytes>=0.41.0
+accelerate>=0.25.0
+
+# Training backends (optional - install as needed)
+# unsloth[colab-new]>=2024.1
+# axolotl>=0.4.0
+
+# CLI & Utils
+click>=8.0
+pydantic>=2.0
+rich>=13.0
+
+# Development dependencies (optional)
+# pytest>=7.0
+# pytest-cov>=4.0
+# black>=23.0
+# ruff>=0.1.0
+# mypy>=1.0

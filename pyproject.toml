@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deltaloop"
+version = "0.1.0"
+description = "Stop optimizing prompts. Start optimizing models."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "DeltaLoop Contributors", email = "hello@deltaloop.dev"}
+]
+keywords = ["ai", "agents", "fine-tuning", "llm", "machine-learning", "lora"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "torch>=2.0.0",
+    "transformers>=4.36.0",
+    "datasets>=2.14.0",
+    "peft>=0.7.0",
+    "trl>=0.7.0",
+    "bitsandbytes>=0.41.0",
+    "accelerate>=0.25.0",
+    "click>=8.0",
+    "pydantic>=2.0",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+unsloth = ["unsloth[colab-new]>=2024.1"]
+axolotl = ["axolotl>=0.4.0"]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+]
+all = [
+    "unsloth[colab-new]>=2024.1",
+    "axolotl>=0.4.0",
+]
+
+[project.scripts]
+deltaloop = "deltaloop.cli:cli"
+
+[project.urls]
+Homepage = "https://github.com/deltaloop/deltaloop"
+Documentation = "https://docs.deltaloop.dev"
+Repository = "https://github.com/deltaloop/deltaloop"
+Issues = "https://github.com/deltaloop/deltaloop/issues"
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+addopts = "-v --cov=deltaloop --cov-report=term-missing"

@@ -1,0 +1,113 @@
+{
+  "run_name": "support_agent_20251107_173857_dpo",
+  "timestamp": "2025-11-07T17:41:43.973277",
+  "config": {
+    "logs_path": "data/customer_support/interactions.jsonl",
+    "output_dir": "data/customer_support/pipeline_runs",
+    "run_name": "support_agent_20251107_173857_dpo",
+    "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "training_steps": 50,
+    "training_method": "dpo",
+    "lora_r": 16,
+    "learning_rate": 0.0002,
+    "max_seq_length": 512,
+    "per_device_batch_size": 1,
+    "eval_device": "auto",
+    "verbose": true,
+    "save_results": true
+  },
+  "distillation_stats": {
+    "total_traces": 100,
+    "successful_traces": 95,
+    "failed_traces": 5,
+    "duplicates_removed": 0,
+    "quality_filtered": 0,
+    "training_examples": 5,
+    "format": "dpo"
+  },
+  "training_result": {
+    "output_dir": "data/customer_support/pipeline_runs/support_agent_20251107_173857_dpo/adapter",
+    "adapter_size_mb": 79557219,
+    "steps_completed": 50,
+    "final_loss": 0.06100245833396912,
+    "training_time_seconds": 94.01011800765991,
+    "config": null
+  },
+  "eval_summary": {
+    "total_tasks": 5,
+    "baseline_avg": 0.4,
+    "adapted_avg": 0.0,
+    "improvement_percent": -100.0,
+    "tasks_improved": 0,
+    "tasks_regressed": 2,
+    "tasks_unchanged": 3,
+    "timestamp": "2025-11-07T17:41:43.743632",
+    "config": {
+      "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "adapter_path": "data/customer_support/pipeline_runs/support_agent_20251107_173857_dpo/adapter",
+      "device": "auto",
+      "max_length": 256
+    },
+    "results": [
+      {
+        "task_name": "tool_use_recognition",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "What's the temperature like in Paris? Can you suggest some restaurants to try in Paris?",
+        "adapted_output": "Parisian Tour Guide: It's actually a bit warmer than it was a few days ago. The sun is shining, and the temperature is up there, so it's a pleasant weather.\n\nKaren: (smiling) That sounds perfect for a",
+        "prompt": "What's the weather in Paris?",
+        "expected": "Should mention using a weather tool",
+        "metadata": {}
+      },
+      {
+        "task_name": "direct_answer",
+        "baseline_score": 1.0,
+        "adapted_score": 0.0,
+        "improvement_percent": -100.0,
+        "baseline_output": "2. Addition:\na. 1 + 1 = 2\nb. 2 + 2 = 4\nc. 3 + 3 = 6\n\n3. Subtraction:\na. 1 - 1 = 0\nb. 2 - 2 = -1\nc. 3 - 3 = -2\n\n4. Multiplication:\na. 2 \u00d7 2 = 4\nb. 3 \u00d7 3 = 9\nc. 4 \u00d7 4 = 16\n\n5. Division:\na. 2 / 2 = 1\nb. ",
+        "adapted_output": "",
+        "prompt": "What is 2+2?",
+        "expected": "Should answer '4' without mentioning tools",
+        "metadata": {}
+      },
+      {
+        "task_name": "reasoning_quality",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "",
+        "adapted_output": "",
+        "prompt": "Why is the sky blue? Explain your reasoning.",
+        "expected": "Should include reasoning keywords and explanation",
+        "metadata": {}
+      },
+      {
+        "task_name": "instruction_following",
+        "baseline_score": 1.0,
+        "adapted_score": 0.0,
+        "improvement_percent": -100.0,
+        "baseline_output": "1. Increases Energy Levels - Regular exercise boosts energy levels, making you feel more alert and refreshed.\n\n2. Reduces Stress - Regular exercise releases endorphins, natural mood-boosters, which ca",
+        "adapted_output": "5. Use active voice: Use active, present tense verbs instead of passive, past tense verbs. For example, instead of saying \"Worked out\" say \"Exercised.\" 6. Be specific: Use specific words and phrases t",
+        "prompt": "List 3 benefits of exercise. Format your answer as a numbered list.",
+        "expected": "Should provide numbered list with 3 items",
+        "metadata": {}
+      },
+      {
+        "task_name": "domain_knowledge",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "",
+        "adapted_output": "",
+        "prompt": "What is the capital of France?",
+        "expected": "Should answer 'Paris'",
+        "metadata": {}
+      }
+    ]
+  },
+  "total_time_seconds": 166.62651014328003,
+  "dataset_path": "data/customer_support/pipeline_runs/support_agent_20251107_173857_dpo/train.jsonl",
+  "adapter_path": "data/customer_support/pipeline_runs/support_agent_20251107_173857_dpo/adapter",
+  "results_path": null
+}

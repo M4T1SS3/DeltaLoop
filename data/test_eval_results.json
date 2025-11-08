@@ -1,0 +1,37 @@
+{
+  "total_tasks": 2,
+  "baseline_avg": 0.65,
+  "adapted_avg": 0.875,
+  "improvement_percent": 34.6,
+  "tasks_improved": 2,
+  "tasks_regressed": 0,
+  "tasks_unchanged": 0,
+  "timestamp": "2025-11-07T12:40:11.318620",
+  "config": {
+    "test": true
+  },
+  "results": [
+    {
+      "task_name": "task1",
+      "baseline_score": 0.6,
+      "adapted_score": 0.85,
+      "improvement_percent": 41.7,
+      "baseline_output": "out1",
+      "adapted_output": "out2",
+      "prompt": "prompt1",
+      "expected": null,
+      "metadata": null
+    },
+    {
+      "task_name": "task2",
+      "baseline_score": 0.7,
+      "adapted_score": 0.9,
+      "improvement_percent": 28.6,
+      "baseline_output": "out1",
+      "adapted_output": "out2",
+      "prompt": "prompt2",
+      "expected": null,
+      "metadata": null
+    }
+  ]
+}

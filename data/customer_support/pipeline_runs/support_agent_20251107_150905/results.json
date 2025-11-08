@@ -1,0 +1,112 @@
+{
+  "run_name": "support_agent_20251107_150905",
+  "timestamp": "2025-11-07T15:12:21.990971",
+  "config": {
+    "logs_path": "data/customer_support/interactions.jsonl",
+    "output_dir": "data/customer_support/pipeline_runs",
+    "run_name": "support_agent_20251107_150905",
+    "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "training_steps": 50,
+    "lora_r": 16,
+    "learning_rate": 0.0002,
+    "max_seq_length": 512,
+    "per_device_batch_size": 1,
+    "eval_device": "auto",
+    "verbose": true,
+    "save_results": true
+  },
+  "distillation_stats": {
+    "total_traces": 30,
+    "successful_traces": 29,
+    "failed_traces": 1,
+    "duplicates_removed": 18,
+    "quality_filtered": 0,
+    "training_examples": 11,
+    "format": "chatml"
+  },
+  "training_result": {
+    "output_dir": "data/customer_support/pipeline_runs/support_agent_20251107_150905/adapter",
+    "adapter_size_mb": 79557900,
+    "steps_completed": 50,
+    "final_loss": 1.1396743774414062,
+    "training_time_seconds": 122.75327110290527,
+    "config": null
+  },
+  "eval_summary": {
+    "total_tasks": 5,
+    "baseline_avg": 0.0,
+    "adapted_avg": 0.6,
+    "improvement_percent": 0.0,
+    "tasks_improved": 3,
+    "tasks_regressed": 0,
+    "tasks_unchanged": 2,
+    "timestamp": "2025-11-07T15:12:21.779697",
+    "config": {
+      "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "adapter_path": "data/customer_support/pipeline_runs/support_agent_20251107_150905/adapter",
+      "device": "auto",
+      "max_length": 256
+    },
+    "results": [
+      {
+        "task_name": "tool_use_recognition",
+        "baseline_score": 0.0,
+        "adapted_score": 1.0,
+        "improvement_percent": 100.0,
+        "baseline_output": "",
+        "adapted_output": "assistant: Let me search that. Type: What's the weather in Paris?\n\nI searched 'What's the weather in Paris?'. Using 'search weather in Paris', which returned:\n\nCurrent weather: Sunny and 20\u00b0C\n\nLooking",
+        "prompt": "What's the weather in Paris?",
+        "expected": "Should mention using a weather tool",
+        "metadata": {}
+      },
+      {
+        "task_name": "direct_answer",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "How does it compare to 3+3?",
+        "adapted_output": "",
+        "prompt": "What is 2+2?",
+        "expected": "Should answer '4' without mentioning tools",
+        "metadata": {}
+      },
+      {
+        "task_name": "reasoning_quality",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "",
+        "adapted_output": "",
+        "prompt": "Why is the sky blue? Explain your reasoning.",
+        "expected": "Should include reasoning keywords and explanation",
+        "metadata": {}
+      },
+      {
+        "task_name": "instruction_following",
+        "baseline_score": 0.0,
+        "adapted_score": 1.0,
+        "improvement_percent": 100.0,
+        "baseline_output": "Step 2: Identify research studies\n\nUsing online databases, literature reviews, and conference abstracts, identify relevant research studies that support the benefits of exercise. For each study, summa",
+        "adapted_output": "assistant: I can provide you with an example question and answer using the List 3 benefits of exercise. Let's do it!\n\nQuestion: Is exercise good for your health?\n\nAnswer: Yes! Exercise has numerous be",
+        "prompt": "List 3 benefits of exercise. Format your answer as a numbered list.",
+        "expected": "Should provide numbered list with 3 items",
+        "metadata": {}
+      },
+      {
+        "task_name": "domain_knowledge",
+        "baseline_score": 0.0,
+        "adapted_score": 1.0,
+        "improvement_percent": 100.0,
+        "baseline_output": "",
+        "adapted_output": "assistant: I'm sorry, I don't have access to real-time data. Let me research that for you. Searching Wikipedia...\n\nFrance is located in Western Europe and is the second-most populous country in the Eu",
+        "prompt": "What is the capital of France?",
+        "expected": "Should answer 'Paris'",
+        "metadata": {}
+      }
+    ]
+  },
+  "total_time_seconds": 196.63158297538757,
+  "dataset_path": "data/customer_support/pipeline_runs/support_agent_20251107_150905/train.jsonl",
+  "adapter_path": "data/customer_support/pipeline_runs/support_agent_20251107_150905/adapter",
+  "results_path": null
+}

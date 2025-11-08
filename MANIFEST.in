@@ -1,0 +1,18 @@
+# Include documentation
+include README.md
+include LICENSE
+include CONTRIBUTING.md
+include requirements.txt
+
+# Include package data
+recursive-include deltaloop *.py
+
+# Exclude unnecessary files
+exclude .gitignore
+recursive-exclude tests *
+recursive-exclude docs *
+recursive-exclude examples *
+recursive-exclude data *
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store

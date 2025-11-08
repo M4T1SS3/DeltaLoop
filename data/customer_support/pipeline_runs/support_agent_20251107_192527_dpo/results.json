@@ -1,0 +1,113 @@
+{
+  "run_name": "support_agent_20251107_192527_dpo",
+  "timestamp": "2025-11-07T19:31:25.840614",
+  "config": {
+    "logs_path": "data/customer_support/interactions_train.jsonl",
+    "output_dir": "data/customer_support/pipeline_runs",
+    "run_name": "support_agent_20251107_192527_dpo",
+    "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "training_steps": 100,
+    "training_method": "dpo",
+    "lora_r": 16,
+    "learning_rate": 0.0002,
+    "max_seq_length": 512,
+    "per_device_batch_size": 1,
+    "eval_device": "auto",
+    "verbose": true,
+    "save_results": true
+  },
+  "distillation_stats": {
+    "total_traces": 160,
+    "successful_traces": 127,
+    "failed_traces": 33,
+    "duplicates_removed": 0,
+    "quality_filtered": 0,
+    "training_examples": 33,
+    "format": "dpo"
+  },
+  "training_result": {
+    "output_dir": "data/customer_support/pipeline_runs/support_agent_20251107_192527_dpo/adapter",
+    "adapter_size_mb": 79560124,
+    "steps_completed": 100,
+    "final_loss": 0.11315585196018219,
+    "training_time_seconds": 290.41379618644714,
+    "config": null
+  },
+  "eval_summary": {
+    "total_tasks": 5,
+    "baseline_avg": 0.0,
+    "adapted_avg": 0.2,
+    "improvement_percent": 0.0,
+    "tasks_improved": 1,
+    "tasks_regressed": 0,
+    "tasks_unchanged": 4,
+    "timestamp": "2025-11-07T19:31:25.628220",
+    "config": {
+      "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "adapter_path": "data/customer_support/pipeline_runs/support_agent_20251107_192527_dpo/adapter",
+      "device": "auto",
+      "max_length": 256
+    },
+    "results": [
+      {
+        "task_name": "tool_use_recognition",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "How long does it take to get from Paris to Amsterdam by car?\nIs there a direct flight between Paris and Amsterdam?\nWhat is the airport in Amsterdam that connects to Paris?\nWhat are the top tourist att",
+        "adapted_output": "A: According to the passage, it is raining heavily in Paris on the given day. The temperature is 12\u00b0C (54\u00b0F).",
+        "prompt": "What's the weather in Paris?",
+        "expected": "Should mention using a weather tool",
+        "metadata": {}
+      },
+      {
+        "task_name": "direct_answer",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "",
+        "adapted_output": "A: The answer is $(2+2)=4$:\n\n*\n\n*$2$ is the sum of the two numbers in the expression \"2+2\"\n\n*$(2+2)$ is the product of those two numbers\n\n*$4$ is the product of 2 and 2\n\nSo the answer is $(2+2) \\times",
+        "prompt": "What is 2+2?",
+        "expected": "Should answer '4' without mentioning tools",
+        "metadata": {}
+      },
+      {
+        "task_name": "reasoning_quality",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "5. Use a graphic organizer or mind map to visually represent your ideas and organize them logically.",
+        "adapted_output": "Science Class: Scientists have found evidence that the sky is blue due to the reflection of the sun's light. They believe that the sun's rays pass through the Earth's atmosphere and bounce back, creat",
+        "prompt": "Why is the sky blue? Explain your reasoning.",
+        "expected": "Should include reasoning keywords and explanation",
+        "metadata": {}
+      },
+      {
+        "task_name": "instruction_following",
+        "baseline_score": 0.0,
+        "adapted_score": 1.0,
+        "improvement_percent": 100.0,
+        "baseline_output": "",
+        "adapted_output": "1. Improved mood and energy levels\n2. Increased confidence and self-esteem\n3. Reduced risk of chronic diseases\n\nRemember to include concrete examples and statistics.",
+        "prompt": "List 3 benefits of exercise. Format your answer as a numbered list.",
+        "expected": "Should provide numbered list with 3 items",
+        "metadata": {}
+      },
+      {
+        "task_name": "domain_knowledge",
+        "baseline_score": 0.0,
+        "adapted_score": 0.0,
+        "improvement_percent": 0.0,
+        "baseline_output": "",
+        "adapted_output": "",
+        "prompt": "What is the capital of France?",
+        "expected": "Should answer 'Paris'",
+        "metadata": {}
+      }
+    ]
+  },
+  "total_time_seconds": 358.19223284721375,
+  "dataset_path": "data/customer_support/pipeline_runs/support_agent_20251107_192527_dpo/train.jsonl",
+  "adapter_path": "data/customer_support/pipeline_runs/support_agent_20251107_192527_dpo/adapter",
+  "results_path": null
+}
