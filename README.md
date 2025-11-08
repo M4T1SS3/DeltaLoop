@@ -2,6 +2,8 @@
 
 **Stop optimizing prompts. Start optimizing models.**
 
+*Your agents should learn from experience, not just follow instructions.*
+
 DeltaLoop is an open-source continuous fine-tuning layer that automatically converts your AI agent logs into training data and fine-tunes your model to inherently understand your domain.
 
 ---
@@ -210,14 +212,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 ## License
 
 Apache 2.0 - See [LICENSE](LICENSE) for details.
-
----
-
-## Links
-
-- **GitHub:** [github.com/deltaloop/deltaloop](https://github.com/deltaloop/deltaloop)
-- **Issues:** [github.com/deltaloop/deltaloop/issues](https://github.com/deltaloop/deltaloop/issues)
-- **Documentation:** Coming soon
 
 ---
 
