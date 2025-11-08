@@ -4,6 +4,8 @@
 
 *Your agents should learn from experience, not just follow instructions.*
 
+> **Prefer Gen Z language?** Check out [README_GENZ.md](README_GENZ.md) for the same info but it hits different fr fr 🔥
+
 DeltaLoop is an open-source continuous fine-tuning layer that automatically converts your AI agent logs into training data and fine-tunes your model to inherently understand your domain.
 
 ---
