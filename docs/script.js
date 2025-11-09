@@ -21,13 +21,22 @@ class AbstractHeroBackground {
         this.nodes = [];
         this.initNodes();
 
-        window.addEventListener('resize', () => this.resize());
+        window.addEventListener('resize', () => {
+            this.resize();
+            // Re-initialize elements for new canvas size
+            this.blobs = [];
+            this.nodes = [];
+            this.initBlobs();
+            this.initNodes();
+        });
         this.animate();
     }
 
     resize() {
-        this.canvas.width = this.canvas.offsetWidth;
-        this.canvas.height = this.canvas.offsetHeight;
+        // Get parent container dimensions
+        const parent = this.canvas.parentElement;
+        this.canvas.width = parent.offsetWidth || window.innerWidth;
+        this.canvas.height = parent.offsetHeight || window.innerHeight;
     }
 
     initBlobs() {
