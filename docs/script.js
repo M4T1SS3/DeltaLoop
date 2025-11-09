@@ -1,5 +1,5 @@
-// Flowing ASCII Background Generator
-class FlowingAsciiBackground {
+// Organic Abstract Background for Hero Section
+class AbstractHeroBackground {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         if (!this.canvas) return;
@@ -7,30 +7,19 @@ class FlowingAsciiBackground {
         this.ctx = this.canvas.getContext('2d');
         this.resize();
 
-        // Symbols that flow
-        this.symbols = [
-            'Δ', '∇', '∂', 'θ', 'λ', 'σ', 'μ', '∞', 'Σ', 'Π', '∫',
-            '→', '←', '↑', '↓', '⟶', '⇒', '⊕', '⊗', '∈', '∀', '∃',
-            '●', '○', '◆', '◇', '■', '□', '▲', '△',
-            '0', '1', 'α', 'β', 'γ', 'ε', 'η', 'ω'
-        ];
+        this.time = 0;
 
-        this.fontSize = 14;
-        this.columns = Math.floor(this.canvas.width / this.fontSize);
+        // Layer 1: Mesh Grid
+        this.meshRows = 20;
+        this.meshCols = 20;
 
-        // Initialize drops
-        this.drops = [];
-        for (let i = 0; i < this.columns; i++) {
-            this.drops[i] = {
-                y: Math.random() * -100,
-                speed: 0.5 + Math.random() * 1,
-                symbol: this.randomSymbol()
-            };
-        }
+        // Layer 2: Gradient Blobs
+        this.blobs = [];
+        this.initBlobs();
 
-        // Horizontal data streams
-        this.streams = [];
-        this.initStreams();
+        // Layer 3: Neural Network
+        this.nodes = [];
+        this.initNodes();
 
         window.addEventListener('resize', () => this.resize());
         this.animate();
@@ -39,83 +28,181 @@ class FlowingAsciiBackground {
     resize() {
         this.canvas.width = this.canvas.offsetWidth;
         this.canvas.height = this.canvas.offsetHeight;
-        this.columns = Math.floor(this.canvas.width / this.fontSize);
     }
 
-    initStreams() {
-        const streamCount = 3;
-        for (let i = 0; i < streamCount; i++) {
-            this.streams.push({
-                y: (this.canvas.height / streamCount) * i + Math.random() * 100,
-                x: -200,
-                speed: 1 + Math.random() * 2,
-                text: this.generateStreamText()
+    initBlobs() {
+        const blobCount = 4;
+        for (let i = 0; i < blobCount; i++) {
+            this.blobs.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                baseSize: 200 + Math.random() * 200,
+                speed: 0.0003 + Math.random() * 0.0002,
+                phase: Math.random() * Math.PI * 2,
+                driftSpeedX: (Math.random() - 0.5) * 0.2,
+                driftSpeedY: (Math.random() - 0.5) * 0.2
             });
         }
     }
 
-    generateStreamText() {
-        const texts = [
-            '[LOGS] → [DISTILL] → [TRAIN] → [ADAPT]',
-            'θ′ = θ - α·∇L(θ)',
-            'Loss ↘  Performance ↗',
-            'W = W_base + ΔW_LoRA',
-            '65% → 85% = +31%'
-        ];
-        return texts[Math.floor(Math.random() * texts.length)];
+    initNodes() {
+        const nodeCount = 50;
+        for (let i = 0; i < nodeCount; i++) {
+            this.nodes.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                radius: 2 + Math.random() * 3,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
     }
 
-    randomSymbol() {
-        return this.symbols[Math.floor(Math.random() * this.symbols.length)];
+    drawMesh() {
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        this.ctx.lineWidth = 1;
+
+        const cellWidth = this.canvas.width / this.meshCols;
+        const cellHeight = this.canvas.height / this.meshRows;
+
+        // Horizontal lines with wave distortion
+        for (let row = 0; row <= this.meshRows; row++) {
+            this.ctx.beginPath();
+            for (let col = 0; col <= this.meshCols; col++) {
+                const x = col * cellWidth;
+                const baseY = row * cellHeight;
+
+                // Wave distortion
+                const wave1 = Math.sin(this.time * 0.5 + col * 0.3) * 15;
+                const wave2 = Math.cos(this.time * 0.3 + row * 0.2) * 10;
+                const y = baseY + wave1 + wave2;
+
+                if (col === 0) {
+                    this.ctx.moveTo(x, y);
+                } else {
+                    this.ctx.lineTo(x, y);
+                }
+            }
+            this.ctx.stroke();
+        }
+
+        // Vertical lines with wave distortion
+        for (let col = 0; col <= this.meshCols; col++) {
+            this.ctx.beginPath();
+            for (let row = 0; row <= this.meshRows; row++) {
+                const baseX = col * cellWidth;
+                const y = row * cellHeight;
+
+                // Wave distortion
+                const wave1 = Math.sin(this.time * 0.4 + row * 0.3) * 15;
+                const wave2 = Math.cos(this.time * 0.6 + col * 0.2) * 10;
+                const x = baseX + wave1 + wave2;
+
+                if (row === 0) {
+                    this.ctx.moveTo(x, y);
+                } else {
+                    this.ctx.lineTo(x, y);
+                }
+            }
+            this.ctx.stroke();
+        }
+    }
+
+    drawGradientBlobs() {
+        for (const blob of this.blobs) {
+            // Organic size pulsing
+            const sizePulse = Math.sin(this.time * blob.speed + blob.phase) * 0.3 + 1;
+            const currentSize = blob.baseSize * sizePulse;
+
+            // Organic position drifting
+            blob.x += blob.driftSpeedX;
+            blob.y += blob.driftSpeedY;
+
+            // Wrap around screen
+            if (blob.x < -currentSize) blob.x = this.canvas.width + currentSize;
+            if (blob.x > this.canvas.width + currentSize) blob.x = -currentSize;
+            if (blob.y < -currentSize) blob.y = this.canvas.height + currentSize;
+            if (blob.y > this.canvas.height + currentSize) blob.y = -currentSize;
+
+            // Create radial gradient
+            const gradient = this.ctx.createRadialGradient(
+                blob.x, blob.y, 0,
+                blob.x, blob.y, currentSize
+            );
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.25)');
+            gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+            gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+            // Draw blob with blur effect
+            this.ctx.filter = 'blur(20px)';
+            this.ctx.fillStyle = gradient;
+            this.ctx.beginPath();
+            this.ctx.arc(blob.x, blob.y, currentSize, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.filter = 'none';
+        }
+    }
+
+    drawNeuralNetwork() {
+        const maxDistance = 150;
+
+        // Update node positions with organic movement
+        for (const node of this.nodes) {
+            // Add sine wave variation for organic feel
+            const waveX = Math.sin(this.time * 0.001 + node.phase) * 0.5;
+            const waveY = Math.cos(this.time * 0.001 + node.phase * 1.5) * 0.5;
+
+            node.x += node.vx + waveX;
+            node.y += node.vy + waveY;
+
+            // Wrap around screen
+            if (node.x < 0) node.x = this.canvas.width;
+            if (node.x > this.canvas.width) node.x = 0;
+            if (node.y < 0) node.y = this.canvas.height;
+            if (node.y > this.canvas.height) node.y = 0;
+        }
+
+        // Draw connections
+        for (let i = 0; i < this.nodes.length; i++) {
+            for (let j = i + 1; j < this.nodes.length; j++) {
+                const dx = this.nodes[i].x - this.nodes[j].x;
+                const dy = this.nodes[i].y - this.nodes[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < maxDistance) {
+                    const opacity = (1 - distance / maxDistance) * 0.3;
+                    this.ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+                    this.ctx.lineWidth = 1;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.nodes[i].x, this.nodes[i].y);
+                    this.ctx.lineTo(this.nodes[j].x, this.nodes[j].y);
+                    this.ctx.stroke();
+                }
+            }
+        }
+
+        // Draw nodes
+        for (const node of this.nodes) {
+            // Pulsing opacity
+            const pulse = Math.sin(this.time * 0.002 + node.phase) * 0.2 + 0.6;
+            this.ctx.fillStyle = `rgba(255, 255, 255, ${pulse})`;
+            this.ctx.beginPath();
+            this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
     }
 
     animate() {
-        // Semi-transparent black for trail effect
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.time++;
 
-        this.ctx.fillStyle = '#ffffff';
-        this.ctx.font = `${this.fontSize}px monospace`;
+        // Clear canvas
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw falling symbols
-        for (let i = 0; i < this.drops.length; i++) {
-            const drop = this.drops[i];
-
-            // Random opacity for depth
-            const opacity = 0.3 + Math.random() * 0.4;
-            this.ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-
-            this.ctx.fillText(
-                drop.symbol,
-                i * this.fontSize,
-                drop.y * this.fontSize
-            );
-
-            // Move drop down
-            drop.y += drop.speed;
-
-            // Reset drop when it goes off screen
-            if (drop.y * this.fontSize > this.canvas.height && Math.random() > 0.95) {
-                drop.y = 0;
-                drop.speed = 0.5 + Math.random() * 1;
-                drop.symbol = this.randomSymbol();
-            }
-        }
-
-        // Draw horizontal streams
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-        for (const stream of this.streams) {
-            this.ctx.fillText(stream.text, stream.x, stream.y);
-
-            stream.x += stream.speed;
-
-            // Reset stream when it goes off screen
-            if (stream.x > this.canvas.width) {
-                stream.x = -200;
-                stream.y = Math.random() * this.canvas.height;
-                stream.text = this.generateStreamText();
-            }
-        }
+        // Draw all layers
+        this.drawMesh();
+        this.drawGradientBlobs();
+        this.drawNeuralNetwork();
 
         requestAnimationFrame(() => this.animate());
     }
@@ -137,8 +224,8 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe all animatable elements
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize flowing ASCII background
-    new FlowingAsciiBackground('ascii-background');
+    // Initialize abstract background
+    new AbstractHeroBackground('ascii-background');
 
     // Observe pipeline steps
     const pipelineSteps = document.querySelectorAll('.pipeline-step');
@@ -239,12 +326,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Add subtle parallax effect to hero grid
+// Add subtle parallax effect to hero background
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
-    const grid = document.querySelector('.grid-background');
-    if (grid && scrolled < window.innerHeight) {
-        grid.style.transform = `translateY(${scrolled * 0.5}px)`;
+    const canvas = document.querySelector('#ascii-background');
+    if (canvas && scrolled < window.innerHeight) {
+        canvas.style.transform = `translateY(${scrolled * 0.3}px)`;
     }
 });
 
