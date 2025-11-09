@@ -33,10 +33,9 @@ class AbstractHeroBackground {
     }
 
     resize() {
-        // Get parent container dimensions
-        const parent = this.canvas.parentElement;
-        this.canvas.width = parent.offsetWidth || window.innerWidth;
-        this.canvas.height = parent.offsetHeight || window.innerHeight;
+        // Fill entire viewport
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
     }
 
     initBlobs() {
