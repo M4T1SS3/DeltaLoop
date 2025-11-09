@@ -60,7 +60,7 @@ class AbstractHeroBackground {
     }
 
     drawMesh() {
-        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
         this.ctx.lineWidth = 1;
 
         const cellWidth = this.canvas.width / this.meshCols;
@@ -130,8 +130,8 @@ class AbstractHeroBackground {
                 blob.x, blob.y, 0,
                 blob.x, blob.y, currentSize
             );
-            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.25)');
-            gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+            gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.2)');
             gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
             // Draw blob with blur effect
@@ -171,9 +171,9 @@ class AbstractHeroBackground {
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance < maxDistance) {
-                    const opacity = (1 - distance / maxDistance) * 0.3;
+                    const opacity = (1 - distance / maxDistance) * 0.5;
                     this.ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
-                    this.ctx.lineWidth = 1;
+                    this.ctx.lineWidth = 1.5;
                     this.ctx.beginPath();
                     this.ctx.moveTo(this.nodes[i].x, this.nodes[i].y);
                     this.ctx.lineTo(this.nodes[j].x, this.nodes[j].y);
@@ -185,7 +185,7 @@ class AbstractHeroBackground {
         // Draw nodes
         for (const node of this.nodes) {
             // Pulsing opacity
-            const pulse = Math.sin(this.time * 0.002 + node.phase) * 0.2 + 0.6;
+            const pulse = Math.sin(this.time * 0.002 + node.phase) * 0.2 + 0.8;
             this.ctx.fillStyle = `rgba(255, 255, 255, ${pulse})`;
             this.ctx.beginPath();
             this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
