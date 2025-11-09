@@ -13,19 +13,12 @@ class AbstractHeroBackground {
         this.meshRows = 20;
         this.meshCols = 20;
 
-        // Layer 2: Gradient Blobs
-        this.blobs = [];
-        this.initBlobs();
-
         // Mouse tracking for mesh interaction
         this.mouseX = -1000;
         this.mouseY = -1000;
 
         window.addEventListener('resize', () => {
             this.resize();
-            // Re-initialize elements for new canvas size
-            this.blobs = [];
-            this.initBlobs();
         });
 
         // Track mouse position relative to canvas
@@ -50,20 +43,6 @@ class AbstractHeroBackground {
         this.canvas.height = parent.offsetHeight;
     }
 
-    initBlobs() {
-        const blobCount = 5;
-        for (let i = 0; i < blobCount; i++) {
-            this.blobs.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                baseSize: 300 + Math.random() * 300, // Much bigger: 300-600px
-                speed: 0.0003 + Math.random() * 0.0002,
-                phase: Math.random() * Math.PI * 2,
-                driftSpeedX: (Math.random() - 0.5) * 0.3,
-                driftSpeedY: (Math.random() - 0.5) * 0.3
-            });
-        }
-    }
 
 
     drawMesh() {
@@ -74,16 +53,12 @@ class AbstractHeroBackground {
         const cellHeight = this.canvas.height / this.meshRows;
         const mouseInfluenceRadius = 250;
 
-        // Horizontal lines with wave distortion and mouse interaction
+        // Horizontal lines with mouse interaction only
         for (let row = 0; row <= this.meshRows; row++) {
             this.ctx.beginPath();
             for (let col = 0; col <= this.meshCols; col++) {
                 const baseX = col * cellWidth;
                 const baseY = row * cellHeight;
-
-                // Wave distortion
-                const wave1 = Math.sin(this.time * 0.5 + col * 0.3) * 15;
-                const wave2 = Math.cos(this.time * 0.3 + row * 0.2) * 10;
 
                 // Mouse-based displacement
                 const dx = baseX - this.mouseX;
@@ -102,7 +77,7 @@ class AbstractHeroBackground {
                 }
 
                 const x = baseX + mouseDisplacementX;
-                const y = baseY + wave1 + wave2 + mouseDisplacementY;
+                const y = baseY + mouseDisplacementY;
 
                 if (col === 0) {
                     this.ctx.moveTo(x, y);
@@ -113,16 +88,12 @@ class AbstractHeroBackground {
             this.ctx.stroke();
         }
 
-        // Vertical lines with wave distortion and mouse interaction
+        // Vertical lines with mouse interaction only
         for (let col = 0; col <= this.meshCols; col++) {
             this.ctx.beginPath();
             for (let row = 0; row <= this.meshRows; row++) {
                 const baseX = col * cellWidth;
                 const baseY = row * cellHeight;
-
-                // Wave distortion
-                const wave1 = Math.sin(this.time * 0.4 + row * 0.3) * 15;
-                const wave2 = Math.cos(this.time * 0.6 + col * 0.2) * 10;
 
                 // Mouse-based displacement
                 const dx = baseX - this.mouseX;
@@ -139,7 +110,7 @@ class AbstractHeroBackground {
                     mouseDisplacementY = Math.sin(angle) * force * 60;
                 }
 
-                const x = baseX + wave1 + wave2 + mouseDisplacementX;
+                const x = baseX + mouseDisplacementX;
                 const y = baseY + mouseDisplacementY;
 
                 if (row === 0) {
@@ -152,40 +123,6 @@ class AbstractHeroBackground {
         }
     }
 
-    drawGradientBlobs() {
-        for (const blob of this.blobs) {
-            // Organic size pulsing
-            const sizePulse = Math.sin(this.time * blob.speed + blob.phase) * 0.3 + 1;
-            const currentSize = blob.baseSize * sizePulse;
-
-            // Organic position drifting
-            blob.x += blob.driftSpeedX;
-            blob.y += blob.driftSpeedY;
-
-            // Wrap around screen
-            if (blob.x < -currentSize) blob.x = this.canvas.width + currentSize;
-            if (blob.x > this.canvas.width + currentSize) blob.x = -currentSize;
-            if (blob.y < -currentSize) blob.y = this.canvas.height + currentSize;
-            if (blob.y > this.canvas.height + currentSize) blob.y = -currentSize;
-
-            // Create radial gradient
-            const gradient = this.ctx.createRadialGradient(
-                blob.x, blob.y, 0,
-                blob.x, blob.y, currentSize
-            );
-            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
-            gradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.3)');
-            gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-
-            // Draw blob with blur effect
-            this.ctx.filter = 'blur(40px)';
-            this.ctx.fillStyle = gradient;
-            this.ctx.beginPath();
-            this.ctx.arc(blob.x, blob.y, currentSize, 0, Math.PI * 2);
-            this.ctx.fill();
-            this.ctx.filter = 'none';
-        }
-    }
 
 
     animate() {
@@ -194,9 +131,8 @@ class AbstractHeroBackground {
         // Clear canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw all layers
+        // Draw mesh grid
         this.drawMesh();
-        this.drawGradientBlobs();
 
         requestAnimationFrame(() => this.animate());
     }
