@@ -1,115 +1,123 @@
-// ASCII Art Generator for Hero Section
-class AsciiArtGenerator {
+// Flowing ASCII Background Generator
+class FlowingAsciiBackground {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
-        this.width = 70;
-        this.height = 5;
+        if (!this.canvas) return;
 
-        // Mathematical and AI symbols
-        this.symbols = ['Δ', '∇', '∂', 'θ', 'λ', 'σ', 'μ', '∞', 'Σ', 'Π', '∫', '→', '⟶', '⇒', '⊕', '⊗', '∈', '∀', '∃'];
-        this.nodeSymbols = ['●', '○', '◆', '◇', '■', '□', '▲', '△'];
-        this.connectSymbols = ['─', '│', '┌', '┐', '└', '┘', '├', '┤', '┬', '┴', '┼', '═', '║', '╔', '╗', '╚', '╝'];
+        this.ctx = this.canvas.getContext('2d');
+        this.resize();
 
-        this.frame = 0;
-        this.patterns = [
-            this.generateNeuralNet.bind(this),
-            this.generateDataFlow.bind(this),
-            this.generateMathEquation.bind(this),
-            this.generateGradientDescent.bind(this)
+        // Symbols that flow
+        this.symbols = [
+            'Δ', '∇', '∂', 'θ', 'λ', 'σ', 'μ', '∞', 'Σ', 'Π', '∫',
+            '→', '←', '↑', '↓', '⟶', '⇒', '⊕', '⊗', '∈', '∀', '∃',
+            '●', '○', '◆', '◇', '■', '□', '▲', '△',
+            '0', '1', 'α', 'β', 'γ', 'ε', 'η', 'ω'
         ];
 
-        this.currentPattern = 0;
-        this.init();
+        this.fontSize = 14;
+        this.columns = Math.floor(this.canvas.width / this.fontSize);
+
+        // Initialize drops
+        this.drops = [];
+        for (let i = 0; i < this.columns; i++) {
+            this.drops[i] = {
+                y: Math.random() * -100,
+                speed: 0.5 + Math.random() * 1,
+                symbol: this.randomSymbol()
+            };
+        }
+
+        // Horizontal data streams
+        this.streams = [];
+        this.initStreams();
+
+        window.addEventListener('resize', () => this.resize());
+        this.animate();
     }
 
-    init() {
-        this.render();
-        // Change pattern every 5 seconds
-        setInterval(() => {
-            this.currentPattern = (this.currentPattern + 1) % this.patterns.length;
-            this.frame = 0;
-        }, 5000);
-
-        // Animate current pattern
-        setInterval(() => {
-            this.frame++;
-            this.render();
-        }, 200);
+    resize() {
+        this.canvas.width = this.canvas.offsetWidth;
+        this.canvas.height = this.canvas.offsetHeight;
+        this.columns = Math.floor(this.canvas.width / this.fontSize);
     }
 
-    render() {
-        const pattern = this.patterns[this.currentPattern]();
-        this.canvas.textContent = pattern;
+    initStreams() {
+        const streamCount = 3;
+        for (let i = 0; i < streamCount; i++) {
+            this.streams.push({
+                y: (this.canvas.height / streamCount) * i + Math.random() * 100,
+                x: -200,
+                speed: 1 + Math.random() * 2,
+                text: this.generateStreamText()
+            });
+        }
     }
 
-    generateNeuralNet() {
-        let art = '    ╔══════════════════════════════════════════════════════════════════╗\n';
-
-        // Layer 1 (input)
-        const nodes1 = this.frame % 2 === 0 ? '●' : '○';
-        art += `    ║  ${nodes1}   ${nodes1}   ${nodes1}   ${nodes1}                                                ║\n`;
-
-        // Connections
-        const conn = this.frame % 2 === 0 ? '━' : '─';
-        art += `    ║   ╲ │ ╱ ╲ │ ╱     ${conn}${conn}→ [DISTILL] ${conn}${conn}→ [TRAIN] ${conn}${conn}→ [ADAPT] ${conn}${conn}→ ∞  ║\n`;
-
-        // Layer 2 (hidden)
-        const nodes2 = this.frame % 2 === 0 ? '◆' : '◇';
-        art += `    ║    ${nodes2}   ${nodes2}   ${nodes2}      Δθ = -∇L(θ)  ·  learning_rate              ║\n`;
-
-        art += '    ╚══════════════════════════════════════════════════════════════════╝';
-        return art;
-    }
-
-    generateDataFlow() {
-        const symbols = ['⟶', '→', '⇒'];
-        const arrow = symbols[this.frame % symbols.length];
-
-        let art = '    ╔══════════════════════════════════════════════════════════════════╗\n';
-        art += `    ║  [LOGS] ${arrow} {filter, dedupe} ${arrow} [DATASET] ${arrow} {LoRA} ${arrow} [MODEL]  ║\n`;
-
-        const pulse = this.frame % 3;
-        const nodes = pulse === 0 ? '●○○' : pulse === 1 ? '○●○' : '○○●';
-        art += `    ║                                                                  ║\n`;
-        art += `    ║    ${nodes}  Training: ${this.frame % 500}/500 steps  Loss: ${(2.5 - (this.frame * 0.01) % 2).toFixed(2)}     ║\n`;
-        art += '    ╚══════════════════════════════════════════════════════════════════╝';
-        return art;
-    }
-
-    generateMathEquation() {
-        const equations = [
-            'L(θ) = Σ log P(y|x,θ)  →  min Loss, max Learning',
-            'θ′ = θ - α·∇L(θ)  →  Gradient Descent in Action',
-            'W_adapted = W_base + ΔW_LoRA  →  17MB of Pure Knowledge',
-            'Performance: 65% → 85% = +31% via Continuous Learning'
+    generateStreamText() {
+        const texts = [
+            '[LOGS] → [DISTILL] → [TRAIN] → [ADAPT]',
+            'θ′ = θ - α·∇L(θ)',
+            'Loss ↘  Performance ↗',
+            'W = W_base + ΔW_LoRA',
+            '65% → 85% = +31%'
         ];
-
-        const eq = equations[Math.floor(this.frame / 5) % equations.length];
-
-        let art = '    ╔══════════════════════════════════════════════════════════════════╗\n';
-        art += '    ║                                                                  ║\n';
-        art += `    ║    ${eq.padEnd(62)}║\n`;
-        art += '    ║                                                                  ║\n';
-        art += '    ╚══════════════════════════════════════════════════════════════════╝';
-        return art;
+        return texts[Math.floor(Math.random() * texts.length)];
     }
 
-    generateGradientDescent() {
-        const step = this.frame % 10;
-        const dots = '●'.repeat(step) + '○'.repeat(10 - step);
+    randomSymbol() {
+        return this.symbols[Math.floor(Math.random() * this.symbols.length)];
+    }
 
-        let art = '    ╔══════════════════════════════════════════════════════════════════╗\n';
-        art += `    ║  Optimization: [${dots}] ${step * 10}%                          ║\n`;
-        art += '    ║                                                                  ║\n';
+    animate() {
+        // Semi-transparent black for trail effect
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Gradient visualization
-        const descent = this.frame % 20 < 10
-            ? '    ║  Loss ↘  ∇θ → ∂L/∂θ → θ_new → Converging to optimal...          ║'
-            : '    ║  Model ↗  Performance improving → 65% → 75% → 85% → ∞          ║';
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.font = `${this.fontSize}px monospace`;
 
-        art += descent + '\n';
-        art += '    ╚══════════════════════════════════════════════════════════════════╝';
-        return art;
+        // Draw falling symbols
+        for (let i = 0; i < this.drops.length; i++) {
+            const drop = this.drops[i];
+
+            // Random opacity for depth
+            const opacity = 0.3 + Math.random() * 0.4;
+            this.ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+
+            this.ctx.fillText(
+                drop.symbol,
+                i * this.fontSize,
+                drop.y * this.fontSize
+            );
+
+            // Move drop down
+            drop.y += drop.speed;
+
+            // Reset drop when it goes off screen
+            if (drop.y * this.fontSize > this.canvas.height && Math.random() > 0.95) {
+                drop.y = 0;
+                drop.speed = 0.5 + Math.random() * 1;
+                drop.symbol = this.randomSymbol();
+            }
+        }
+
+        // Draw horizontal streams
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        for (const stream of this.streams) {
+            this.ctx.fillText(stream.text, stream.x, stream.y);
+
+            stream.x += stream.speed;
+
+            // Reset stream when it goes off screen
+            if (stream.x > this.canvas.width) {
+                stream.x = -200;
+                stream.y = Math.random() * this.canvas.height;
+                stream.text = this.generateStreamText();
+            }
+        }
+
+        requestAnimationFrame(() => this.animate());
     }
 }
 
@@ -129,8 +137,8 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe all animatable elements
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize ASCII art generator
-    new AsciiArtGenerator('ascii-canvas');
+    // Initialize flowing ASCII background
+    new FlowingAsciiBackground('ascii-background');
 
     // Observe pipeline steps
     const pipelineSteps = document.querySelectorAll('.pipeline-step');
@@ -185,7 +193,6 @@ function animateMetrics() {
 
 function animateNumber(element, target, isPositive, isNegative, hasPercent) {
     const duration = 1500;
-    const start = 0;
     const startTime = performance.now();
 
     function update(currentTime) {
