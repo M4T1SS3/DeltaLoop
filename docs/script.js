@@ -31,16 +31,16 @@ class AbstractHeroBackground {
     }
 
     initBlobs() {
-        const blobCount = 4;
+        const blobCount = 5;
         for (let i = 0; i < blobCount; i++) {
             this.blobs.push({
                 x: Math.random() * this.canvas.width,
                 y: Math.random() * this.canvas.height,
-                baseSize: 200 + Math.random() * 200,
+                baseSize: 300 + Math.random() * 300, // Much bigger: 300-600px
                 speed: 0.0003 + Math.random() * 0.0002,
                 phase: Math.random() * Math.PI * 2,
-                driftSpeedX: (Math.random() - 0.5) * 0.2,
-                driftSpeedY: (Math.random() - 0.5) * 0.2
+                driftSpeedX: (Math.random() - 0.5) * 0.3,
+                driftSpeedY: (Math.random() - 0.5) * 0.3
             });
         }
     }
@@ -130,12 +130,12 @@ class AbstractHeroBackground {
                 blob.x, blob.y, 0,
                 blob.x, blob.y, currentSize
             );
-            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
-            gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.2)');
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
+            gradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.3)');
             gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
             // Draw blob with blur effect
-            this.ctx.filter = 'blur(20px)';
+            this.ctx.filter = 'blur(40px)';
             this.ctx.fillStyle = gradient;
             this.ctx.beginPath();
             this.ctx.arc(blob.x, blob.y, currentSize, 0, Math.PI * 2);
