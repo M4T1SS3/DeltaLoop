@@ -17,25 +17,37 @@ class AbstractHeroBackground {
         this.blobs = [];
         this.initBlobs();
 
-        // Layer 3: Neural Network
-        this.nodes = [];
-        this.initNodes();
+        // Mouse tracking for mesh interaction
+        this.mouseX = -1000;
+        this.mouseY = -1000;
 
         window.addEventListener('resize', () => {
             this.resize();
             // Re-initialize elements for new canvas size
             this.blobs = [];
-            this.nodes = [];
             this.initBlobs();
-            this.initNodes();
         });
+
+        // Track mouse position relative to canvas
+        this.canvas.addEventListener('mousemove', (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            this.mouseX = e.clientX - rect.left;
+            this.mouseY = e.clientY - rect.top;
+        });
+
+        this.canvas.addEventListener('mouseleave', () => {
+            this.mouseX = -1000;
+            this.mouseY = -1000;
+        });
+
         this.animate();
     }
 
     resize() {
-        // Fill entire viewport
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        // Fill the hero section
+        const parent = this.canvas.parentElement;
+        this.canvas.width = parent.offsetWidth;
+        this.canvas.height = parent.offsetHeight;
     }
 
     initBlobs() {
@@ -53,19 +65,6 @@ class AbstractHeroBackground {
         }
     }
 
-    initNodes() {
-        const nodeCount = 50;
-        for (let i = 0; i < nodeCount; i++) {
-            this.nodes.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3,
-                radius: 2 + Math.random() * 3,
-                phase: Math.random() * Math.PI * 2
-            });
-        }
-    }
 
     drawMesh() {
         this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
@@ -73,18 +72,37 @@ class AbstractHeroBackground {
 
         const cellWidth = this.canvas.width / this.meshCols;
         const cellHeight = this.canvas.height / this.meshRows;
+        const mouseInfluenceRadius = 250;
 
-        // Horizontal lines with wave distortion
+        // Horizontal lines with wave distortion and mouse interaction
         for (let row = 0; row <= this.meshRows; row++) {
             this.ctx.beginPath();
             for (let col = 0; col <= this.meshCols; col++) {
-                const x = col * cellWidth;
+                const baseX = col * cellWidth;
                 const baseY = row * cellHeight;
 
                 // Wave distortion
                 const wave1 = Math.sin(this.time * 0.5 + col * 0.3) * 15;
                 const wave2 = Math.cos(this.time * 0.3 + row * 0.2) * 10;
-                const y = baseY + wave1 + wave2;
+
+                // Mouse-based displacement
+                const dx = baseX - this.mouseX;
+                const dy = baseY - this.mouseY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                let mouseDisplacementX = 0;
+                let mouseDisplacementY = 0;
+
+                if (distance < mouseInfluenceRadius && distance > 0) {
+                    // Inverse square falloff for smooth bulge
+                    const force = (1 - distance / mouseInfluenceRadius) ** 2;
+                    const angle = Math.atan2(dy, dx);
+                    mouseDisplacementX = Math.cos(angle) * force * 60;
+                    mouseDisplacementY = Math.sin(angle) * force * 60;
+                }
+
+                const x = baseX + mouseDisplacementX;
+                const y = baseY + wave1 + wave2 + mouseDisplacementY;
 
                 if (col === 0) {
                     this.ctx.moveTo(x, y);
@@ -95,17 +113,34 @@ class AbstractHeroBackground {
             this.ctx.stroke();
         }
 
-        // Vertical lines with wave distortion
+        // Vertical lines with wave distortion and mouse interaction
         for (let col = 0; col <= this.meshCols; col++) {
             this.ctx.beginPath();
             for (let row = 0; row <= this.meshRows; row++) {
                 const baseX = col * cellWidth;
-                const y = row * cellHeight;
+                const baseY = row * cellHeight;
 
                 // Wave distortion
                 const wave1 = Math.sin(this.time * 0.4 + row * 0.3) * 15;
                 const wave2 = Math.cos(this.time * 0.6 + col * 0.2) * 10;
-                const x = baseX + wave1 + wave2;
+
+                // Mouse-based displacement
+                const dx = baseX - this.mouseX;
+                const dy = baseY - this.mouseY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                let mouseDisplacementX = 0;
+                let mouseDisplacementY = 0;
+
+                if (distance < mouseInfluenceRadius && distance > 0) {
+                    const force = (1 - distance / mouseInfluenceRadius) ** 2;
+                    const angle = Math.atan2(dy, dx);
+                    mouseDisplacementX = Math.cos(angle) * force * 60;
+                    mouseDisplacementY = Math.sin(angle) * force * 60;
+                }
+
+                const x = baseX + wave1 + wave2 + mouseDisplacementX;
+                const y = baseY + mouseDisplacementY;
 
                 if (row === 0) {
                     this.ctx.moveTo(x, y);
@@ -152,54 +187,6 @@ class AbstractHeroBackground {
         }
     }
 
-    drawNeuralNetwork() {
-        const maxDistance = 150;
-
-        // Update node positions with organic movement
-        for (const node of this.nodes) {
-            // Add sine wave variation for organic feel
-            const waveX = Math.sin(this.time * 0.001 + node.phase) * 0.5;
-            const waveY = Math.cos(this.time * 0.001 + node.phase * 1.5) * 0.5;
-
-            node.x += node.vx + waveX;
-            node.y += node.vy + waveY;
-
-            // Wrap around screen
-            if (node.x < 0) node.x = this.canvas.width;
-            if (node.x > this.canvas.width) node.x = 0;
-            if (node.y < 0) node.y = this.canvas.height;
-            if (node.y > this.canvas.height) node.y = 0;
-        }
-
-        // Draw connections
-        for (let i = 0; i < this.nodes.length; i++) {
-            for (let j = i + 1; j < this.nodes.length; j++) {
-                const dx = this.nodes[i].x - this.nodes[j].x;
-                const dy = this.nodes[i].y - this.nodes[j].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < maxDistance) {
-                    const opacity = (1 - distance / maxDistance) * 0.5;
-                    this.ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
-                    this.ctx.lineWidth = 1.5;
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(this.nodes[i].x, this.nodes[i].y);
-                    this.ctx.lineTo(this.nodes[j].x, this.nodes[j].y);
-                    this.ctx.stroke();
-                }
-            }
-        }
-
-        // Draw nodes
-        for (const node of this.nodes) {
-            // Pulsing opacity
-            const pulse = Math.sin(this.time * 0.002 + node.phase) * 0.2 + 0.8;
-            this.ctx.fillStyle = `rgba(255, 255, 255, ${pulse})`;
-            this.ctx.beginPath();
-            this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-            this.ctx.fill();
-        }
-    }
 
     animate() {
         this.time++;
@@ -210,7 +197,6 @@ class AbstractHeroBackground {
         // Draw all layers
         this.drawMesh();
         this.drawGradientBlobs();
-        this.drawNeuralNetwork();
 
         requestAnimationFrame(() => this.animate());
     }
@@ -334,14 +320,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Add subtle parallax effect to hero background
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const canvas = document.querySelector('#ascii-background');
-    if (canvas && scrolled < window.innerHeight) {
-        canvas.style.transform = `translateY(${scrolled * 0.3}px)`;
-    }
-});
 
 // Copy install command on click
 const installCommand = document.querySelector('.install-command code');
