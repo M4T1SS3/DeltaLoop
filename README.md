@@ -73,21 +73,6 @@ Done! Your model is now specialized for your domain.
 
 ---
 
-## What You Get
-
-Based on preliminary testing:
-
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Task Success | 65% | 85% | **+31%** |
-| Tool Accuracy | 58% | 82% | **+41%** |
-| Prompt Tokens | 1,250 | 120 | **-90%** |
-| Latency | 3.2s | 1.1s | **-66%** |
-
-**Translation:** Better performance, less cost, faster responses.
-
----
-
 ## Key Features
 
 - **Framework Agnostic** - Works with LangChain, AutoGen, CrewAI, LlamaIndex, or custom agents
